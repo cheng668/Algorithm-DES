@@ -6,7 +6,6 @@
 #include <memory>
 
 using namespace std;
-//typedef bool DES_KEY[16][48];
 bool DES_KEY[16][48];
 const static int
 //C1:将要加密的8字节明文用CT1表置换位置，并分开前32bits为CL,后32bits为CR  
@@ -45,8 +44,8 @@ KEYMOVE[16] = {
 	1, 2, 2, 2, 2, 2, 2, 1 },
 /*
 K4:将循环左移后KR和KL，
-再分别与KT2表进行压缩置换，
-这里注意KT2表中28要对KR进行操作，
+再把KR和KL合并起来进行KT2表的压缩置换，
+这里注意KT2表中28要选取第55位，而不是（28-1=）27位，
 最终最终Key,
 重复K2-K4共16次
 */
@@ -165,7 +164,7 @@ SCHG[32] = {
 		}
 	}
 
-	/*S盒运算，核心*/
+	/*S_box运算，核心*/
 	void SFunc(bool* CL/*32bits*/, bool* CR/*32bits*/,
 		 int count, Cipher flag)
 	{
